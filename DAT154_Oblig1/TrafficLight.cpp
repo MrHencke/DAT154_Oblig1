@@ -47,11 +47,12 @@
                 DeleteObject(brush);
             }
 		}
-
+        int TrafficLight::getState() {
+            return state;
+        }
         void TrafficLight::setState(int x) {
             state = x;
         }
-
         void TrafficLight::incState() {
             state = (state + 1) % 4;
         };

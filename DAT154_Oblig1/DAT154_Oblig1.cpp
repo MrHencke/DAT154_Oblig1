@@ -17,11 +17,13 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
+int red_green_interval = 10000;
+int yellow_interval = 2000;
 
 TrafficLight tl1;
 TrafficLight tl2;
-TrafficLight tl3;
-TrafficLight tl4;
+//TrafficLight tl3;
+//TrafficLight tl4;
 
 
 void clearScreen(HWND hWnd);
@@ -142,6 +144,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
         position(hWnd);
+        tl2.setState(2);
+        SetTimer(hWnd, 1, red_green_interval, NULL);
         break;
     case WM_SIZE:
         position(hWnd);
@@ -175,24 +179,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         drawRoads(hdc, screen); //  traffic flow: (top->bottom, left->right)
         tl1.draw(hdc);
         tl2.draw(hdc);
-        tl3.draw(hdc);
-        tl4.draw(hdc);
         EndPaint(hWnd, &ps);
         }
         break;
     case WM_TIMER:
-
+        tl1.incState();
+        tl2.incState();
+        tl1.refresh(hWnd);
+        tl2.refresh(hWnd);
+        if ((tl1.getState() + 1) % 2 == 0) {
+         SetTimer(hWnd, 1, yellow_interval, NULL);
+        }
+        else {
+         SetTimer(hWnd, 1, red_green_interval, NULL);
+        }
         break;
     case WM_LBUTTONDOWN:
         tl1.incState();
         tl1.refresh(hWnd);
         break;
-    case WM_MBUTTONDOWN: 
-        tl3.incState();
-        break;
-    case WM_RBUTTONDOWN:
-        tl2.incState();
-        break;
+
         
     case WM_DESTROY:
         PostQuitMessage(0);
@@ -235,7 +241,7 @@ void position(HWND hWnd) {
     GetClientRect(hWnd, &screen);
     tl1.setCoords(screen.right / 2 - 200, screen.bottom / 2 - 450);
     tl2.setCoords(screen.right / 2 - 600, screen.bottom / 2 + 100);
-    tl3.setCoords(screen.right / 2 + 300, screen.bottom / 2 - 450);
-    tl4.setCoords(screen.right / 2 + 90, screen.bottom / 2 + 100);
+    //tl3.setCoords(screen.right / 2 + 300, screen.bottom / 2 - 450);
+    //tl4.setCoords(screen.right / 2 + 90, screen.bottom / 2 + 100);
     clearScreen(hWnd);
 }

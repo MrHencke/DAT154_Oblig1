@@ -18,6 +18,7 @@ class TrafficLight {
         TrafficLight(int x_pos, int y_pos);
         void draw(HDC hdc);
         void setState(int x);
+        int getState();
         void incState();
         void decState();
         void refresh(HWND hWnd);
