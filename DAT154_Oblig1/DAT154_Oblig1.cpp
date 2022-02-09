@@ -4,6 +4,7 @@
 #include "framework.h"
 #include "DAT154_Oblig1.h"
 #include "Drawing.h"
+#include "TrafficLight.h"
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include <Math.h>
@@ -16,16 +17,15 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-//bool initState[3] = { TRUE, FALSE, FALSE };
-bool lightStates[4][3] = {{TRUE, FALSE, FALSE}};
 
-int state = 0;
+TrafficLight tl1;
+TrafficLight tl2;
+TrafficLight tl3;
+TrafficLight tl4;
 
-void setState(int state, int light);
+
 void clearScreen(HWND hWnd);
-void replaceRow(int light, bool newState[]);
-void debugState(HDC hdc);
-void debugLightState(HDC hdc);
+void position(HWND hWnd);
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -140,7 +140,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-       
+    case WM_CREATE:
+        position(hWnd);
+        break;
+    case WM_SIZE:
+        position(hWnd);
+        break;
+    case WM_SIZING:
+        position(hWnd);
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -164,32 +172,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         GetClientRect(hWnd, &screen);
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        debugState(hdc);
-        debugLightState(hdc);
         drawRoads(hdc, screen); //  traffic flow: (top->bottom, left->right)
-        drawTrafficLight(hdc, screen.right/2 + 100, screen.bottom/2 - 450, lightStates[0]);
-        drawTrafficLight(hdc, screen.right/2 - 250, screen.bottom/2 + 100, lightStates[1]);
-        //drawTrafficLight(hdc, 300, 200, lightStates[2]);
-        //drawTrafficLight(hdc, 100, 200, lightStates[3]);
+        tl1.draw(hdc);
+        tl2.draw(hdc);
+        tl3.draw(hdc);
+        tl4.draw(hdc);
         EndPaint(hWnd, &ps);
         }
         break;
-    case WM_LBUTTONDOWN:
-        state = (state + 1) % 4;
-        setState(state, 0);
-        setState(state, 1);
-        setState(state, 2);
-        setState(state, 3);
+    case WM_TIMER:
 
-        clearScreen(hWnd);
         break;
-    case WM_MBUTTONDOWN: //For debugging purposes
-        clearScreen(hWnd);
+    case WM_LBUTTONDOWN:
+        tl1.incState();
+        tl1.refresh(hWnd);
+        break;
+    case WM_MBUTTONDOWN: 
+        tl3.incState();
         break;
     case WM_RBUTTONDOWN:
-        state = state == 0 ? 3 : state-1;
-        setState(state, 0);
-        clearScreen(hWnd);
+        tl2.incState();
         break;
         
     case WM_DESTROY:
@@ -221,54 +223,19 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void setState(int state, int light) {
-    switch (state) {
-    case 0:
-        replaceRow(light, new bool[3] { TRUE, FALSE, FALSE });
-        break;
-    case 1:
-        replaceRow(light, new bool[3]{ TRUE, TRUE, FALSE });
-        break;
-    case 2:
-        replaceRow(light, new bool[3]{ FALSE, FALSE, TRUE });
-        break;
-    case 3:
-        replaceRow(light, new bool[3]{ FALSE, TRUE, FALSE });
-        break;
-    default:
-        replaceRow(light, new bool[3]{ TRUE, FALSE, FALSE });
-        break;
-    }
-}
-
-void replaceRow(int light, bool newState[]) {
-    for (int i = 0; i < 3; i++) {
-        lightStates[light][i] = newState[i];
-    }
-}
 void clearScreen(HWND hWnd) {
     RECT screen;
     GetClientRect(hWnd, &screen);
     InvalidateRect(hWnd, &screen, TRUE);
 }
 
-void debugState(HDC hdc) {
-        WCHAR s[10];
-        _itow_s(state, s, 10);
-        s[9] = '\0';
-        TextOut(hdc, 100, 100, s, wcslen(s));
-    
-}
-
-void debugLightState(HDC hdc) {
-    for (int i = 0; i < 3; i++)
-    {
-        if (lightStates[0][i]) {
-        WCHAR s[10];
-        _itow_s(i, s, 10);
-        s[9] = '\0';
-        TextOut(hdc, i*100, 150, s, wcslen(s));
-        }
-    }
-
+void position(HWND hWnd) {
+    //Set coordinates of traffic lights
+    RECT screen;
+    GetClientRect(hWnd, &screen);
+    tl1.setCoords(screen.right / 2 - 200, screen.bottom / 2 - 450);
+    tl2.setCoords(screen.right / 2 - 600, screen.bottom / 2 + 100);
+    tl3.setCoords(screen.right / 2 + 300, screen.bottom / 2 - 450);
+    tl4.setCoords(screen.right / 2 + 90, screen.bottom / 2 + 100);
+    clearScreen(hWnd);
 }

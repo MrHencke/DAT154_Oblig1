@@ -33,12 +33,18 @@
     <ClInclude Include="Colors.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="TrafficLight.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DAT154_Oblig1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrafficLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

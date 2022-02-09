@@ -33,38 +33,7 @@ void drawRoads(HDC hdc, RECT screen) {
     
 }
 
-void drawTrafficLight(HDC hdc, int x, int y, bool * stateArr) { 
-    HBRUSH brush;
-    int width = 120;
-    int height = width*3;
-    int margin = width/10;
-        brush = CreateSolidBrush(col_black);
-        HGDIOBJ hOrg = SelectObject(hdc, brush);
 
-        RoundRect(hdc, x, y, (x+width), (y+height), 20, 20); //Background
-        SelectObject(hdc, hOrg);
-        DeleteObject(brush);
-        for (int i = 0; i < 3; i++) {
-            int j = i + 1;
-            int left = x + margin;
-            int top = y + margin + i * width;
-            int right = (x + width) - margin;
-            int bottom = y + ((j * width)) - margin;
-            if (stateArr[i]) {
-             brush = CreateSolidBrush(t_light[i]);
-            }
-            else {
-            brush = CreateSolidBrush(col_gray);
-            }
-            SelectObject(hdc, brush);
-
-        Ellipse(hdc, left, top, right, bottom);
-        SelectObject(hdc, hOrg);
-        DeleteObject(brush);
-        }
-
-    
-}
 
 void drawVehicle(HDC hdc, int state) {
 

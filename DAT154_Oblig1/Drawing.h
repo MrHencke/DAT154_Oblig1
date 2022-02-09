@@ -5,5 +5,4 @@
 #define DRAWROADS_H
 void drawRoads(HDC hdc, RECT screen);
 
-void drawTrafficLight(HDC hdc, int x, int y, bool * stateArr);
 #endif
