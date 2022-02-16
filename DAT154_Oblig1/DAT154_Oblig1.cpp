@@ -16,17 +16,18 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-
 const WPARAM TL_Timer = 0;
 const WPARAM UpdateCars_Timer = 1;
 const WPARAM SpawnCars_Timer = 2;
-
+int pw=0;
+int pn=0;
 TrafficController trafficController;
 
 //Forward declarations of functions
 void clearScreen(HWND hWnd); 
-int pw=0;
-int pn=0;
+void writePW(HDC hdc, RECT screen, int pw);
+void writePN(HDC hdc, RECT screen, int pn);
+void writeDebugProbabilities(HDC hdc, RECT screen, int pw, int pn);
 
 
 // Forward declarations of functions included in this code module:
@@ -187,6 +188,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         HBRUSH bg = CreateSolidBrush(RGB(39, 98, 0));
         HGDIOBJ hOrg = SelectObject(hdc, bg);
         Rectangle(hdc, 0, 0, screen.right, screen.bottom);
+        writeDebugProbabilities(hdc, screen, pw, pn);
         SelectObject(hdc, hOrg);
         DeleteObject(bg);
         trafficController.drawAll(hdc);
@@ -224,17 +226,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         }
         break;
+    case WM_KEYDOWN:
+        switch (wParam) {
+            case VK_UP:
+                pn = pn >= 100 ? 100 : pn+10;
+                break;
+            case VK_DOWN:
+                pn = pn <= 0 ? 0 : pn-10;
+                break;
+            case VK_LEFT:
+                pw = pw >= 100 ? 100 : pw+10;
+                break;
+            case VK_RIGHT:
+                pw = pw <= 0 ? 0 : pw-10;
+                break;
+        }
+        break;
     case WM_LBUTTONDOWN:
         trafficController.addCarToRoad(w, e);
-        //trafficController.addCarToRoad(e, w);
-
         break;
     case WM_RBUTTONDOWN:
         trafficController.addCarToRoad(n, s);
-        //trafficController.addCarToRoad(s, n);
-        break;
-    case WM_MBUTTONDOWN:
-        clearScreen(hWnd);
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
@@ -297,3 +309,19 @@ void clearScreen(HWND hWnd) {
     InvalidateRect(hWnd, &screen, FALSE);
 }
 
+void writeDebugProbabilities(HDC hdc, RECT screen, int pw, int pn) {
+    writePW(hdc, screen, pw);
+    writePN(hdc, screen, pn);
+}
+
+void writePW(HDC hdc, RECT screen, int pw) {
+    TCHAR text[30];
+    wsprintf(text, _T("PW: %d%%"), pw);
+    TextOut(hdc, screen.left, screen.top, text, wcslen(text));
+}
+
+void writePN(HDC hdc, RECT screen, int pn) {
+    TCHAR text[30];
+    wsprintf(text, _T("PN: %d%%"), pn);
+    TextOut(hdc, screen.left, screen.top + 20, text, wcslen(text));
+}

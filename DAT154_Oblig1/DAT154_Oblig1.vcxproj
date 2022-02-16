@@ -161,7 +161,6 @@
     <ClCompile Include="LeftRoad.cpp" />
     <ClCompile Include="RightRoad.cpp" />
     <ClCompile Include="Road.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="TopRoad.cpp" />
     <ClCompile Include="TrafficController.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
