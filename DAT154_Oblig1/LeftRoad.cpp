@@ -62,7 +62,7 @@ void LeftRoad::updateCars() {
     int lastCarXPos = east_pos * 2;
     bool hasCarInFront = FALSE;
     for (std::list<Car*>::iterator it = cars.begin(); it != cars.end(); it++) {
-        if ((*it)->getXPos() >= east_pos) {
+        if ((*it)->getXPos() - car_size >= east_pos) {
             transferList.emplace_back(*it);
             cars.remove(*it);
             break;

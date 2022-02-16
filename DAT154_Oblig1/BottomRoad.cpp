@@ -61,7 +61,7 @@ void BottomRoad::updateCars() {
     int lastCarYPos = north_pos/2;
     bool hasCarInFront = FALSE;
     for (std::list<Car*>::iterator it = cars.begin(); it != cars.end(); it++) {
-        if ((*it)->getYPos() <= north_pos) {
+        if ((*it)->getYPos() +car_size <= north_pos) {
             transferList.emplace_back(*it);
             cars.remove(*it);
             break;
