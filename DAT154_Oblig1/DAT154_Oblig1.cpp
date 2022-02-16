@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "DAT154_Oblig1.h"
+#include "Resource.h"
 #include <iostream>
 #include "TrafficController.h"
 #define _USE_MATH_DEFINES
@@ -18,14 +19,14 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 const WPARAM TL_Timer = 0;
 const WPARAM UpdateCars_Timer = 1;
+const WPARAM SpawnCars_Timer = 2;
 
 TrafficController trafficController;
 
 //Forward declarations of functions
 void clearScreen(HWND hWnd); 
-void debugLog(std::string message) {
-    _RPT1(0, "%d\n", message);
-}
+int pw=0;
+int pn=0;
 
 
 // Forward declarations of functions included in this code module:
@@ -33,6 +34,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    Settings(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -123,7 +125,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
    SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
    SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
-
+   SetTimer(hWnd, SpawnCars_Timer, 1000, NULL);
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
    return TRUE;
@@ -164,6 +166,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
+            case IDM_P_SETTINGS:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_SETTINGSBOX), hWnd, Settings);
+                break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -179,7 +184,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         HDC hdc = CreateCompatibleDC(ohdc);
         HBITMAP bmp = CreateCompatibleBitmap(ohdc, screen.right, screen.bottom);
         SelectObject(hdc, bmp);
-        HBRUSH bg = CreateSolidBrush(RGB(255, 255, 255));
+        HBRUSH bg = CreateSolidBrush(RGB(39, 98, 0));
         HGDIOBJ hOrg = SelectObject(hdc, bg);
         Rectangle(hdc, 0, 0, screen.right, screen.bottom);
         SelectObject(hdc, hOrg);
@@ -194,7 +199,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TIMER:
         switch (wParam)
         {
-
         case TL_Timer:
             if (trafficController.incrementAllTrafficLights() == 0) {
                 SetTimer(hWnd, TL_Timer, red_green_interval, NULL);
@@ -209,7 +213,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             clearScreen(hWnd);
             SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
             break;
-        default:
+        case SpawnCars_Timer:
+            if (rand() % 100 +1 <= pw) {
+                trafficController.addCarToRoad(w, e);
+            }
+            if (rand() % 100 + 1 <= pn) {
+                trafficController.addCarToRoad(n, s);
+            }
+            SetTimer(hWnd, SpawnCars_Timer, 1000, NULL);
             break;
         }
         break;
@@ -246,6 +257,32 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
+INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+
+        if (LOWORD(wParam) == IDOK) {
+            pw = GetDlgItemInt(hDlg, IDC_PW_FIELD, NULL, FALSE);
+            pn = GetDlgItemInt(hDlg, IDC_PN_FIELD, NULL, FALSE);
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
