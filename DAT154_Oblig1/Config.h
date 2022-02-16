@@ -10,15 +10,9 @@ const int red_green_interval_S = 5;
 const int yellow_interval_S = 2;
 const int cars_timer_interval = 10;
 
-
-
 enum Direction {
 	n=0, w, s, e
 };
-/*
- const void debugLog(std::string message) {
-	_RPT1(0, "%d\n", message);
-}*/
 
 //Calculated constants
 const int road_width = road_lanes * lane_width;

@@ -42,7 +42,7 @@ void Intersection::updateCars() {
         switch ((*it)->getDestination())
         {
         case n:
-            if ((*it)->getYPos() <= north_pos) {
+            if ((*it)->getYPos()-car_size <= north_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }
@@ -51,7 +51,7 @@ void Intersection::updateCars() {
             }
             break;
         case w:
-            if ((*it)->getXPos() <= west_pos) {
+            if ((*it)->getXPos() - car_size <= west_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }
@@ -60,7 +60,7 @@ void Intersection::updateCars() {
             }
             break;
         case s:
-            if ((*it)->getYPos() >= south_pos) {
+            if ((*it)->getYPos() + car_size >= south_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }
@@ -69,7 +69,7 @@ void Intersection::updateCars() {
             }
             break;
         case e:
-            if ((*it)->getXPos() >= east_pos) {
+            if ((*it)->getXPos() + car_size >= east_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }

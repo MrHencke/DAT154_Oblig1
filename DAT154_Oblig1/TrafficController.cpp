@@ -11,10 +11,10 @@ TrafficController::TrafficController() {
 
 
 void TrafficController::drawAll(HDC hdc) {
+	intersection.draw(hdc);
 	for (Road * road : roads) {
 		road->draw(hdc);
 	}
-	intersection.draw(hdc);
 }
 
 void TrafficController::positionAll(RECT screen) {

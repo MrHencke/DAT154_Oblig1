@@ -215,12 +215,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
         trafficController.addCarToRoad(w, e);
-        trafficController.addCarToRoad(e, w);
+        //trafficController.addCarToRoad(e, w);
 
         break;
     case WM_RBUTTONDOWN:
         trafficController.addCarToRoad(n, s);
-        trafficController.addCarToRoad(s, n);
+        //trafficController.addCarToRoad(s, n);
         break;
     case WM_MBUTTONDOWN:
         clearScreen(hWnd);
