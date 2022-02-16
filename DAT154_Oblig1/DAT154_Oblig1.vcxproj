@@ -139,17 +139,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Car.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DAT154_Oblig1.h" />
-    <ClInclude Include="Drawing.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Intersection.h" />
+    <ClInclude Include="Lane.h" />
+    <ClInclude Include="Road.h" />
+    <ClInclude Include="TrafficController.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BottomRoad.cpp" />
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="DAT154_Oblig1.cpp" />
-    <ClCompile Include="Drawing.cpp" />
+    <ClCompile Include="Intersection.cpp" />
+    <ClCompile Include="Lane.cpp" />
+    <ClCompile Include="LeftRoad.cpp" />
+    <ClCompile Include="RightRoad.cpp" />
+    <ClCompile Include="Road.cpp" />
+    <ClCompile Include="TopRoad.cpp" />
+    <ClCompile Include="TrafficController.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
   </ItemGroup>
   <ItemGroup>

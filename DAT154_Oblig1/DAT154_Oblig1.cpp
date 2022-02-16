@@ -3,9 +3,8 @@
 
 #include "framework.h"
 #include "DAT154_Oblig1.h"
-#include "Drawing.h"
-#include "TrafficLight.h"
 #include <iostream>
+#include "TrafficController.h"
 #define _USE_MATH_DEFINES
 #include <Math.h>
 
@@ -17,17 +16,17 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-int red_green_interval = 10000;
-int yellow_interval = 2000;
+const WPARAM TL_Timer = 0;
+const WPARAM UpdateCars_Timer = 1;
 
-TrafficLight tl1;
-TrafficLight tl2;
-//TrafficLight tl3;
-//TrafficLight tl4;
+TrafficController trafficController;
 
+//Forward declarations of functions
+void clearScreen(HWND hWnd); 
+void debugLog(std::string message) {
+    _RPT1(0, "%d\n", message);
+}
 
-void clearScreen(HWND hWnd);
-void position(HWND hWnd);
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -122,6 +121,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
+   SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
+   SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -140,18 +141,19 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    RECT screen;
+    GetClientRect(hWnd, &screen);
+
     switch (message)
     {
     case WM_CREATE:
-        position(hWnd);
-        tl2.setState(2);
-        SetTimer(hWnd, 1, red_green_interval, NULL);
+        trafficController.positionAll(screen);
         break;
     case WM_SIZE:
-        position(hWnd);
+        trafficController.positionAll(screen);
         break;
     case WM_SIZING:
-        position(hWnd);
+        trafficController.positionAll(screen);
         break;
     case WM_COMMAND:
         {
@@ -172,34 +174,57 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-        RECT screen;
-        GetClientRect(hWnd, &screen);
         PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-        drawRoads(hdc, screen); //  traffic flow: (top->bottom, left->right)
-        tl1.draw(hdc);
-        tl2.draw(hdc);
+        HDC ohdc = BeginPaint(hWnd, &ps);
+        HDC hdc = CreateCompatibleDC(ohdc);
+        HBITMAP bmp = CreateCompatibleBitmap(ohdc, screen.right, screen.bottom);
+        SelectObject(hdc, bmp);
+        HBRUSH bg = CreateSolidBrush(RGB(255, 255, 255));
+        HGDIOBJ hOrg = SelectObject(hdc, bg);
+        Rectangle(hdc, 0, 0, screen.right, screen.bottom);
+        SelectObject(hdc, hOrg);
+        DeleteObject(bg);
+        trafficController.drawAll(hdc);
+        BitBlt(ohdc, 0, 0, screen.right, screen.bottom, hdc, 0,0,SRCCOPY);
+        DeleteObject(bmp);
+        DeleteObject(hdc);
         EndPaint(hWnd, &ps);
         }
         break;
     case WM_TIMER:
-        tl1.incState();
-        tl2.incState();
-        tl1.refresh(hWnd);
-        tl2.refresh(hWnd);
-        if ((tl1.getState() + 1) % 2 == 0) {
-         SetTimer(hWnd, 1, yellow_interval, NULL);
-        }
-        else {
-         SetTimer(hWnd, 1, red_green_interval, NULL);
+        switch (wParam)
+        {
+
+        case TL_Timer:
+            if (trafficController.incrementAllTrafficLights() == 0) {
+                SetTimer(hWnd, TL_Timer, red_green_interval, NULL);
+            }
+            else {
+                SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
+            }
+            clearScreen(hWnd);
+            break;
+        case UpdateCars_Timer:
+            trafficController.updateAllCars();
+            clearScreen(hWnd);
+            SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
+            break;
+        default:
+            break;
         }
         break;
     case WM_LBUTTONDOWN:
-        tl1.incState();
-        tl1.refresh(hWnd);
-        break;
+        trafficController.addCarToRoad(w, e);
+        trafficController.addCarToRoad(e, w);
 
-        
+        break;
+    case WM_RBUTTONDOWN:
+        trafficController.addCarToRoad(n, s);
+        trafficController.addCarToRoad(s, n);
+        break;
+    case WM_MBUTTONDOWN:
+        clearScreen(hWnd);
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -232,16 +257,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void clearScreen(HWND hWnd) {
     RECT screen;
     GetClientRect(hWnd, &screen);
-    InvalidateRect(hWnd, &screen, TRUE);
+    InvalidateRect(hWnd, &screen, FALSE);
 }
 
-void position(HWND hWnd) {
-    //Set coordinates of traffic lights
-    RECT screen;
-    GetClientRect(hWnd, &screen);
-    tl1.setCoords(screen.right / 2 - 200, screen.bottom / 2 - 450);
-    tl2.setCoords(screen.right / 2 - 600, screen.bottom / 2 + 100);
-    //tl3.setCoords(screen.right / 2 + 300, screen.bottom / 2 - 450);
-    //tl4.setCoords(screen.right / 2 + 90, screen.bottom / 2 + 100);
-    clearScreen(hWnd);
-}
