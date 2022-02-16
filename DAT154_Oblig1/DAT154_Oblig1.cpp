@@ -23,10 +23,6 @@ TrafficController trafficController;
 
 //Forward declarations of functions
 void clearScreen(HWND hWnd); 
-void spawnSouthboundCar();
-void spawnEastboundCar();
-void incrementAllTrafficLights();
-void updateCarPositions();
 void debugLog(std::string message) {
     _RPT1(0, "%d\n", message);
 }
@@ -125,8 +121,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
-   SetTimer(hWnd, TL_Timer, 2000, NULL);
-   SetTimer(hWnd, UpdateCars_Timer, 5, NULL);
+   SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
+   SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -211,7 +207,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case UpdateCars_Timer:
             trafficController.updateAllCars();
             clearScreen(hWnd);
-            SetTimer(hWnd, UpdateCars_Timer, 1, NULL);
+            SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
             break;
         default:
             break;
@@ -219,11 +215,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
         trafficController.addCarToRoad(w, e);
+        trafficController.addCarToRoad(e, w);
+
         break;
     case WM_RBUTTONDOWN:
         trafficController.addCarToRoad(n, s);
+        trafficController.addCarToRoad(s, n);
         break;
     case WM_MBUTTONDOWN:
+        clearScreen(hWnd);
         break;
     case WM_DESTROY:
         PostQuitMessage(0);

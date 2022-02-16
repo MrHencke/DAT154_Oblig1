@@ -24,6 +24,7 @@ class TrafficLight {
         void draw(HDC hdc);
         void setState(int x);
         int getState();
+        bool isGreen();
         void incStateRefresh(HWND hWnd);
         void incState();
         void decState();

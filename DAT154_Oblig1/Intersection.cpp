@@ -36,20 +36,13 @@ void Intersection::autoPosition(RECT screen) {
     south_pos = y_pos + h_road_width;
 };
 
-void Intersection::refresh(HWND hWnd) {
-    if (cars.size() > 0 || transferList.size() > 0) {
-        RECT is_area = { west_pos, north_pos, east_pos, south_pos };
-        InvalidateRect(hWnd, &is_area, TRUE);
-    }
-}
-
 void Intersection::updateCars() {
     for (std::list<Car*>::reverse_iterator it = cars.rbegin(); it != cars.rend();) {
         (*it)->updatePosition();
         switch ((*it)->getDestination())
         {
         case n:
-            if ((*it)->getYPos() >= north_pos) {
+            if ((*it)->getYPos() <= north_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }
@@ -58,7 +51,7 @@ void Intersection::updateCars() {
             }
             break;
         case w:
-            if ((*it)->getXPos() >= west_pos) {
+            if ((*it)->getXPos() <= west_pos) {
                 transferList.emplace_front(*it);
                 cars.remove(*it);
             }

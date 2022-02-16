@@ -153,11 +153,15 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BottomRoad.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="DAT154_Oblig1.cpp" />
     <ClCompile Include="Intersection.cpp" />
     <ClCompile Include="Lane.cpp" />
+    <ClCompile Include="LeftRoad.cpp" />
+    <ClCompile Include="RightRoad.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="TopRoad.cpp" />
     <ClCompile Include="TrafficController.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
   </ItemGroup>

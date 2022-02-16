@@ -10,9 +10,9 @@ enum class carState {
 	transferring
 };
 
-const int car_speed = 1;
+const int car_speed = 3;
 const int car_size = 20;
-const int car_spacing = 15;
+const int car_spacing = 30;
 
 class Car {
 	private:
@@ -22,11 +22,12 @@ class Car {
 		Direction start;
 		Direction destination;
 		int size;
-		float speed;
+		int speed;
+		COLORREF color;
 
 	public:
 		Car();
-		Car(int x_pos, int y_pos, Direction start, Direction destination, int size, int speed);
+		Car(int x_pos, int y_pos, Direction start, Direction destination);
 		int getYPos();
 		int getXPos();
 		int getSize();

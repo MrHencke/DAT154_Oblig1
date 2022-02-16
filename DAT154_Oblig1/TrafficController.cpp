@@ -6,8 +6,7 @@
 
 TrafficController::TrafficController() {
 	this -> intersection = Intersection();
-	this -> roads = std::vector<Road*>({ new Road(Direction::n), new Road(Direction::w), new Road(Direction::s), new Road(Direction::e) });
-	this -> trafficLights = std::vector<TrafficLight*>({ new TrafficLight(Direction::n),  new TrafficLight(Direction::w),  new TrafficLight(Direction::s),  new TrafficLight(Direction::e) });
+	this -> roads = std::vector<Road*>({ new TopRoad(), new LeftRoad(), new BottomRoad(), new RightRoad() });
 }
 
 
@@ -16,9 +15,6 @@ void TrafficController::drawAll(HDC hdc) {
 		road->draw(hdc);
 	}
 	intersection.draw(hdc);
-	for (TrafficLight * tl : trafficLights) {
-		tl->draw(hdc);
-	}
 }
 
 void TrafficController::positionAll(RECT screen) {
@@ -26,23 +22,16 @@ void TrafficController::positionAll(RECT screen) {
 	for (auto road : roads) {
 		road->autoPosition(screen);
 	}
-	for (auto tl : trafficLights) {
-		tl->autoPosition(screen);
-	}
 }
 
-void TrafficController::refreshAllTrafficLights(HWND hWnd) {
-	for (auto tl : trafficLights) {
-		tl->refresh(hWnd);
-	}
-}
 
 int TrafficController::incrementAllTrafficLights() {
-	if (abs(trafficLights[0]->getState() - trafficLights[1]->getState()) == 2) {
-		for (auto tl : trafficLights) {
-			tl->incState();
+
+	if (abs(roads[0]->getTrafficLight()->getState() - roads[1]->getTrafficLight()->getState()) == 2) {
+		for (auto road : roads) {
+			road->getTrafficLight()->incState();
 		}
-		if (trafficLights[0]->getState() == 1 || trafficLights[0]->getState() == 3) {
+		if (roads[0]->getTrafficLight()->getState() == 1 || roads[0]->getTrafficLight()->getState() == 3) {
 			return 1;// SetTimer(hWnd, 0, yellow_interval, NULL);
 		}
 		else {
@@ -51,25 +40,15 @@ int TrafficController::incrementAllTrafficLights() {
 		}
 	}
 	else {
-		trafficLights[0]->incState();
-		trafficLights[2]->incState();
+		roads[0]->getTrafficLight()->incState();
+		roads[2]->getTrafficLight()->incState();
+
 		return 1;//SetTimer(hWnd, 0, yellow_interval, NULL);
 	}
 }
 
 void TrafficController::addCarToRoad(Direction start, Direction destination) {
 	roads[start]->newCar(destination);
-}
-
-void TrafficController::refreshRoad(HWND hWnd, Direction direction) {
-	roads[direction]->refresh(hWnd);
-}
-
-void TrafficController::refreshAllRoads(HWND hWnd) {
-	for (auto road : roads) {
-		road->refresh(hWnd);
-	}
-	intersection.refresh(hWnd);
 }
 
 void TrafficController::updateAllCars() {

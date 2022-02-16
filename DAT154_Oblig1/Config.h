@@ -8,6 +8,7 @@ const int lane_width = 70;// 35;
 
 const int red_green_interval_S = 5;
 const int yellow_interval_S = 2;
+const int cars_timer_interval = 10;
 
 
 

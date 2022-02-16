@@ -62,20 +62,16 @@
     int TrafficLight::getState() {
         return state;
     }
-
+    bool TrafficLight::isGreen() {
+        return state == 2;
+    }
     void TrafficLight::setState(int x) {
         state = x;
     }
     void TrafficLight::incState() {
         state = (state + 1) % 4;
     };
-    void TrafficLight::incStateRefresh(HWND hWnd) {
-        state = (state + 1) % 4;
-        refresh(hWnd);
-    };
-    void TrafficLight::decState() {
-        state = state == 0 ? 3 : state - 1;
-    };
+
     void TrafficLight::autoPosition(RECT screen) {
 
         switch (direction) {
