@@ -7,7 +7,7 @@ void BottomRoad::autoPosition(RECT screen) {
     south_pos = screen.bottom;
     Road::autoPosition(screen);
 };
-
+/*
 void BottomRoad::updateCars() {
     int lastCarYPos = north_pos/2;
     bool hasCarInFront = FALSE;
@@ -35,12 +35,13 @@ void BottomRoad::updateCars() {
         lastCarYPos = (*it)->getYPos();
     }
     Road::updateCars();
-}
+}*/
 
 void BottomRoad::setLanes(RECT screen) {
-    int i = 1;
-    for (auto& lane : lanes) {
-        lane = std::make_pair(east_pos - i * lane_width + (lane_width / 2), south_pos);
-        i++;
+    for (int i = 0; i < inboundLanes.size();i++) {
+        inboundLanes[i] = new VerticalLane(i, east_pos - (i+1) * lane_width + (lane_width / 2), south_pos, north_pos);
+    }    
+    for (int i = 0; i < outboundLanes.size();i++) {
+        outboundLanes[i] = new OutboundLane(i);
     }
 }

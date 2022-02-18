@@ -12,10 +12,9 @@ Road::Road(Direction direction){
     this->south_pos = 0;
     this->direction = direction;
     this->trafficLight = new TrafficLight(direction);
-    this->inboundCars = std::list<Car*>();
-    this->outboundCars = std::list<Car*>();
+    this->inboundLanes = std::array<InboundLane*, road_lanes/2>();
+    this->outboundLanes = std::array<OutboundLane*, road_lanes / 2>();
     this->transferList = std::list<Car*>();
-    this->lanes = std::array<std::pair<int, int>, road_lanes/2>();
 }
 
 void Road::draw(HDC hdc) {
@@ -27,11 +26,11 @@ void Road::draw(HDC hdc) {
         SelectObject(hdc, hOrg);
         DeleteObject(brush);
 
-        for (const auto& car : inboundCars) {
-            car->draw(hdc);
+        for (const auto& lane : inboundLanes) {
+            lane->draw(hdc);
         }
-        for (const auto& car : outboundCars) {
-            car->draw(hdc);
+        for (const auto& lane : outboundLanes) {
+            lane->draw(hdc);
         }
     
     trafficLight->draw(hdc);
@@ -47,12 +46,12 @@ TrafficLight* Road::getTrafficLight(){
 
 
 void Road::addOutboundCar(Car*car) {
-    outboundCars.emplace_back(car);
+    outboundLanes[0]->addCar(car); //TODO Dynamically set to correct lane
 }
 
 void Road::addNewInboundCar() {
-    std::pair<int, int> lane = getRandomLane();
-    inboundCars.emplace_back(new Car(lane.first, lane.second, direction));
+    InboundLane* lane = getRandomInboundLane();
+    lane->addNewCar(direction);
 }
 
 std::list<Car*> Road::getTransferList() {
@@ -63,12 +62,19 @@ void Road::clearTransferList() {
     transferList = {};
 }
 
-std::pair<int, int> Road::getRandomLane() {
-    return lanes[rand() % lanes.size()];
+InboundLane* Road::getRandomInboundLane() {
+    return inboundLanes[rand() % inboundLanes.size()];
 }
 
 void Road::updateCars() {
-    for (auto* car : outboundCars) {
-        car->updatePosition();
+    for (auto* lane : inboundLanes) {
+        lane->updateCars(trafficLight->isGreen());
+        if (lane->getTransferList().size() > 0) {
+            transferList.splice(transferList.begin(), lane->getTransferList());
+            lane->clearTransferList();
+        }
+    }
+    for (auto* lane : outboundLanes) {
+        lane->updateCars();
     }
 }

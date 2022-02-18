@@ -14,6 +14,7 @@ void TrafficController::drawAll(HDC hdc) {
 	intersection.draw(hdc);
 	for (Road * road : roads) {
 		road->draw(hdc);
+		road->drawLaneDivider(hdc);
 	}
 }
 

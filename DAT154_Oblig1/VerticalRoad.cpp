@@ -1,7 +1,7 @@
 #include "Road.h"
 #include "Colors.h"
 
-void VerticalRoad::draw(HDC hdc) {
+void VerticalRoad::drawLaneDivider(HDC hdc) {
     Road::draw(hdc);
     LOGBRUSH lb;
     lb.lbColor = col_yellow;

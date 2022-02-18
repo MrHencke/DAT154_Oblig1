@@ -4,7 +4,7 @@
 #include "Config.h"
 #include "TrafficLight.h"
 
-void HorizontalRoad::draw(HDC hdc) {
+void HorizontalRoad::drawLaneDivider(HDC hdc) {
     Road::draw(hdc);
     LOGBRUSH lb;
     lb.lbColor = col_yellow;

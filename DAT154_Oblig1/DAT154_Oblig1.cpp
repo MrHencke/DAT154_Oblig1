@@ -1,9 +1,4 @@
-#include "framework.h"
 #include "DAT154_Oblig1.h"
-#include "Resource.h"
-#include "TrafficController.h"
-#define _USE_MATH_DEFINES
-#include <Math.h>
 
 #define MAX_LOADSTRING 100
 
@@ -97,9 +92,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
+   //Initialize timers
    SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
    SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
    SetTimer(hWnd, SpawnCars_Timer, 1000, NULL);
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
    return TRUE;
@@ -162,8 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_TIMER:
-        switch (wParam)
-        {
+        switch (wParam){
         case TL_Timer:
             if (trafficController.incrementAllTrafficLights() == 0) {
                 SetTimer(hWnd, TL_Timer, red_green_interval, NULL);
@@ -191,27 +187,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_KEYDOWN:
         switch (wParam) {
-            case VK_UP:
-                pn = pn >= 100 ? 100 : pn+10;
-                break;
-            case VK_DOWN:
-                pn = pn <= 0 ? 0 : pn-10;
-                break;
-            case VK_LEFT:
-                pw = pw >= 100 ? 100 : pw+10;
-                break;
-            case VK_RIGHT:
-                pw = pw <= 0 ? 0 : pw-10;
-                break;
+        case VK_UP:
+            pn = pn >= 100 ? 100 : pn + 10;
+            break;
+        case VK_DOWN:
+            pn = pn <= 0 ? 0 : pn - 10;
+            break;
+        case VK_LEFT:
+            pw = pw <= 0 ? 0 : pw - 10;
+            break;
+        case VK_RIGHT:
+            pw = pw >= 100 ? 100 : pw + 10;
+            break;
+        case 0x57: //W key
+            trafficController.addCarToRoad(n, s);
+            break;
+        case 0x41: //A key
+            trafficController.addCarToRoad(w, e);
+            break;
+        case 0x53: //S key
+            trafficController.addCarToRoad(s, n);
+            break;
+        case 0x44: //S key
+            trafficController.addCarToRoad(e, w);
+            break;
         }
         break;
     case WM_LBUTTONDOWN:
         trafficController.addCarToRoad(w, e);
-        trafficController.addCarToRoad(e, w);
         break;
     case WM_RBUTTONDOWN:
         trafficController.addCarToRoad(n, s);
-        trafficController.addCarToRoad(s, n);
         break;
     case WM_DESTROY:
         PostQuitMessage(0);

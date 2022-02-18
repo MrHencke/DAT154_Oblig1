@@ -6,7 +6,7 @@ void LeftRoad::autoPosition(RECT screen) {
         south_pos = screen.bottom / 2 + h_road_width;
         Road::autoPosition(screen);
 };
-
+/*
 void LeftRoad::updateCars() {
     int lastCarXPos = east_pos * 2;
     bool hasCarInFront = FALSE;
@@ -36,11 +36,15 @@ void LeftRoad::updateCars() {
     Road::updateCars();
 
 }
+*/
 
 void LeftRoad::setLanes(RECT screen) {
-    int i = 1;
-    for (auto& lane : lanes) {
-        lane = std::make_pair(west_pos, south_pos - i * lane_width + (lane_width / 2));
-        i++;
+    for (int i = 0; i < inboundLanes.size(); i++) {
+        inboundLanes[i] = new HorizontalLane(i, west_pos, south_pos - (i+1) * lane_width + (lane_width / 2), east_pos);
     }
+    for (int i = 0; i < outboundLanes.size(); i++) {
+        outboundLanes[i] = new OutboundLane(i);
+    }
+
+
 }
