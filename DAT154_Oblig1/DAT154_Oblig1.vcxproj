@@ -156,6 +156,7 @@
     <ClCompile Include="BottomRoad.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="DAT154_Oblig1.cpp" />
+    <ClCompile Include="HorizontalRoad.cpp" />
     <ClCompile Include="Intersection.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="LeftRoad.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="TopRoad.cpp" />
     <ClCompile Include="TrafficController.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
+    <ClCompile Include="VerticalRoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DAT154_Oblig1.rc" />

@@ -4,12 +4,6 @@
 #include "framework.h"
 #include "Config.h"
 
-enum class carState {
-	driving = 0,
-	stopped,
-	transferring
-};
-
 const int car_speed = 3;
 const int car_size = 20;
 const int car_spacing = 30;
@@ -26,7 +20,7 @@ class Car {
 		COLORREF color;
 
 	public:
-		Car();
+		Car(int x_pos, int y_pos, Direction start);
 		Car(int x_pos, int y_pos, Direction start, Direction destination);
 		int getYPos();
 		int getXPos();

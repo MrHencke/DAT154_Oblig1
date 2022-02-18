@@ -4,26 +4,23 @@
 #define LANE_H
 #include "Config.h"
 #include "Car.h"
-#include <vector>
+#include "list"
 
 class Lane
 {
 private:
-	int outerX;
-	int outerY;
-	int innerX;
-	int innerY;
-
+	int x_pos;
+	int y_pos;
+	bool inbound;
+	std::list<Car*> cars;
 
 public:
 	Lane();
-	Lane(int outerX, int outerY);
-	int getOuterX();
-	void setOuterX(int x);
-	int getOuterY();
-	void setOuterY(int y);
-
+	Lane(int x, int y, bool inbound);
+	int getXPos();
+	void setXPos(int x);
+	int getYPos();
+	void setYPos(int y);
 };
-
 #endif
 

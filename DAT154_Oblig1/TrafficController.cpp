@@ -21,6 +21,7 @@ void TrafficController::positionAll(RECT screen) {
 	intersection.autoPosition(screen);
 	for (auto road : roads) {
 		road->autoPosition(screen);
+		road->setLanes(screen);
 	}
 }
 
@@ -42,13 +43,12 @@ int TrafficController::incrementAllTrafficLights() {
 	else {
 		roads[0]->getTrafficLight()->incState();
 		roads[2]->getTrafficLight()->incState();
-
 		return 1;//SetTimer(hWnd, 0, yellow_interval, NULL);
 	}
 }
 
 void TrafficController::addCarToRoad(Direction start, Direction destination) {
-	roads[start]->newCar(destination);
+	roads[start]->addNewInboundCar();
 }
 
 void TrafficController::updateAllCars() {
@@ -64,7 +64,7 @@ void TrafficController::updateAllCars() {
 		auto cars = intersection.getTransferList();
 		for (auto car : cars) {
 			int destination = car->getDestination();
-			roads[destination]->addCar(car);
+			roads[destination]->addOutboundCar(car);
 		}
 		intersection.clearTransferList();
 	}

@@ -1,5 +1,15 @@
 #include "Car.h"
 #include "Config.h"
+Car::Car(int x_pos, int y_pos, Direction start) {
+	this->x_pos = x_pos;
+	this->y_pos = y_pos;
+	this->currentDirection = static_cast<Direction>((start + 2) % 4);
+	this->start = start;
+	this->destination = static_cast<Direction>((start + 2) % 4);
+	this->size = car_size;
+	this->speed = car_speed;
+	this->color = RGB(rand() % 256, rand() % 256, rand() % 256);
+}
 
 Car::Car(int x_pos, int y_pos, Direction start, Direction destination) {
 	this->x_pos = x_pos;

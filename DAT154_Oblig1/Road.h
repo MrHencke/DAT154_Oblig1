@@ -1,92 +1,83 @@
 #pragma once
 #ifndef ROAD_H
 #define ROAD_H
-#include "framework.h"
 #include "TrafficLight.h"
 #include "Config.h"
 #include "Lane.h"
 #include "list"
+#include "utility"
+#include "array"
+
 
 class Road {
-
 protected:
-    Direction direction;
-    std::list<int> lanes;
-    TrafficLight * trafficLight;
-    std::list<Car*> transferList;
-    std::list<Car*> cars;
     int west_pos;
     int north_pos;
     int south_pos;
     int east_pos;
-    int start;
-    int end;
-    void moveToTransferList();
+    Direction direction;
+    TrafficLight * trafficLight;
+    std::list<Car*> inboundCars;
+    std::list<Car*> outboundCars;
+    std::list<Car*> transferList;
+    std::array<std::pair<int,int>, road_lanes/2> lanes;
 public:
-    Road();
-    virtual void draw(HDC hdc) = 0;
-    void addCar(Car* car);
-    virtual void newCar(Direction destination) = 0;
-    virtual void updateCars() = 0;
+    Road(Direction direction);
+    virtual void draw(HDC hdc);
+    virtual void updateCars();
     virtual void autoPosition(RECT screen);
+    virtual void setLanes(RECT screen) = 0;
     TrafficLight* getTrafficLight();
+    void addOutboundCar(Car* car);
+    void addNewInboundCar();
     std::list<Car*> getTransferList();
     void clearTransferList();
+    std::pair<int, int> getRandomLane();
 };
 
 class HorizontalRoad : public Road
 {
 public:
-    HorizontalRoad();
+    HorizontalRoad(Direction direction) : Road(direction) {};
     void draw(HDC hdc) override;
-    void newCar(Direction destination) override;
 };
 
-class VerticalRoad : public Road
-{
+class VerticalRoad : public Road{
 public:
-    VerticalRoad();
+    VerticalRoad(Direction direction) : Road(direction){};
     void draw(HDC hdc) override;
-    void newCar(Direction destination) override;
+
 };
 
-class LeftRoad : public Road
-{
+class LeftRoad : public HorizontalRoad{
 public:
-    LeftRoad();
-    void draw(HDC hdc) override;
+    LeftRoad() : HorizontalRoad(w){};
     void autoPosition(RECT screen) override;
-    void newCar(Direction destination) override;
     void updateCars() override;
+    void setLanes(RECT screen) override;
 };
 
-class RightRoad : public Road
-{
+class RightRoad : public HorizontalRoad{
 public:
-    RightRoad();
-    void draw(HDC hdc) override;
+    RightRoad() : HorizontalRoad(e){};
     void autoPosition(RECT screen) override;
-    void newCar(Direction destination) override;
     void updateCars() override;
+    void setLanes(RECT screen) override;
 };
 
-class TopRoad : public Road
-{
+class TopRoad : public VerticalRoad{
 public:
-    TopRoad();
-    void draw(HDC hdc) override;
+    TopRoad() : VerticalRoad(n){};
     void autoPosition(RECT screen) override;
-    void newCar(Direction destination) override;
     void updateCars() override;
+    void setLanes(RECT screen) override;
 };
 
-class BottomRoad : public Road
-{
+class BottomRoad : public VerticalRoad{
 public:
-    BottomRoad();
-    void draw(HDC hdc) override;
+    BottomRoad() : VerticalRoad(s) {};
     void autoPosition(RECT screen) override;
-    void newCar(Direction destination) override;
     void updateCars() override;
+    void setLanes(RECT screen) override;
 };
 #endif

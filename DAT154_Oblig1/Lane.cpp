@@ -1,35 +1,32 @@
 #include "Lane.h"
 
 Lane::Lane() {
-	this->outerX = 0;
-	this->outerY = 0;
-	this->innerX = 0;
-	this->innerY = 0;
+	this->x_pos = 0;
+	this->y_pos = 0;
+	this->inbound = TRUE;
 }
 
-Lane::Lane(int outerX, int outerY) {
-	this->outerX = outerX;
-	this->outerY = outerY;
-	this->innerX = 0;
-	this->innerY = 0;
+Lane::Lane(int x, int y, bool inbound) {
+	this->x_pos = x;
+	this->y_pos = y;
+	this->inbound = inbound;
+	this->cars = std::list<Car*>();
 }
 
-int Lane::getOuterX()
-{
-	return 0;
+int Lane::getXPos() {
+	return x_pos;
 }
 
-void Lane::setOuterX(int x)
-{
+void Lane::setXPos(int x){
+	x_pos = x;
 }
 
-int Lane::getOuterY()
-{
-	return 0;
+int Lane::getYPos(){
+	return y_pos;
 }
 
-void Lane::setOuterY(int y)
-{
+void Lane::setYPos(int y){
+	y_pos = y;
 }
 
 
