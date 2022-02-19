@@ -12,6 +12,6 @@ void TopRoad::setLanes(RECT screen) {
             inboundLanes[i] = new TopLane(i, west_pos + i * lane_width + (lane_width / 2), north_pos, south_pos);
         }
         for (int i = 0; i < outboundLanes.size(); i++) {
-            outboundLanes[i] = new OutboundLane(i);
+            outboundLanes[i] = new OutboundLane(north_pos);
         }
 }

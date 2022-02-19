@@ -12,7 +12,7 @@ void LeftRoad::setLanes(RECT screen) {
         inboundLanes[i] = new LeftLane(i, west_pos, south_pos - (i+1) * lane_width + (lane_width / 2), east_pos);
     }
     for (int i = 0; i < outboundLanes.size(); i++) {
-        outboundLanes[i] = new OutboundLane(i);
+        outboundLanes[i] = new OutboundLane(west_pos);
     }
 
 

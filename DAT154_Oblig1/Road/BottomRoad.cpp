@@ -13,6 +13,6 @@ void BottomRoad::setLanes(RECT screen) {
         inboundLanes[i] = new BottomLane(i, east_pos - (i+1) * lane_width + (lane_width / 2), south_pos, north_pos);
     }    
     for (int i = 0; i < outboundLanes.size();i++) {
-        outboundLanes[i] = new OutboundLane(i);
+        outboundLanes[i] = new OutboundLane(south_pos);
     }
 }

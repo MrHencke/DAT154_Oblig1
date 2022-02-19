@@ -130,6 +130,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_P_SETTINGS:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_SETTINGSBOX), hWnd, Settings);
                 break;
+            case IDM_HELP:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_HELPBOX), hWnd, About);
+                break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;

@@ -14,6 +14,6 @@ void RightRoad::setLanes(RECT screen) {
         inboundLanes[i] = new RightLane(i, east_pos, north_pos + i * lane_width + (lane_width / 2), west_pos);
     }
     for (int i = 0; i < outboundLanes.size(); i++) {
-        outboundLanes[i] = new OutboundLane(i);
+        outboundLanes[i] = new OutboundLane(east_pos);
     }
 }

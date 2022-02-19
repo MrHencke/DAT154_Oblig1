@@ -17,9 +17,11 @@ public:
 };
 
 class OutboundLane : public Lane {
+private:
+	int outer;
 
 public:
-	OutboundLane(int id);
+	OutboundLane(int outer);
 	void updateCars();
 };
 
