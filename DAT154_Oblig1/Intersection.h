@@ -16,7 +16,6 @@ private:
 public:
     Intersection();
     void draw(HDC hdc);
-    void refresh(HWND hWnd);
     void updateCars();
     std::list<Car*> getTransferList();
     void clearTransferList();

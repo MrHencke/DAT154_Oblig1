@@ -2,6 +2,7 @@
 #ifndef TRAFFICCONTROLLER_H
 #define TRAFFICCONTROLLER_H
 #include "Intersection.h"
+#include "vector"
 
 class TrafficController {
 private:
@@ -13,8 +14,6 @@ public:
 	void positionAll(RECT screen);
 	int incrementAllTrafficLights();
 	void addCarToRoad(Direction start, Direction destination);
-	void refreshRoad(HWND hWnd,Direction direction);
-	void refreshAllRoads(HWND hWnd);
 	void updateAllCars();
 };
 

@@ -5,8 +5,8 @@
 #include "Config.h"
 
 Intersection::Intersection() {
-    this-> cars = std::list<Car*>();
-    this ->transferList = std::list<Car*>();
+    this->cars = std::list<Car*>();
+    this->transferList = std::list<Car*>();
     this->west_pos = 0;
     this->north_pos = 0;
     this->east_pos = 0;
@@ -16,18 +16,15 @@ Intersection::Intersection() {
 void Intersection::draw(HDC hdc){
     HBRUSH brush = CreateSolidBrush(col_darker_gray);
     HGDIOBJ hOrg = SelectObject(hdc, brush);
-
     Rectangle(hdc, west_pos, north_pos, east_pos, south_pos);
     SelectObject(hdc, hOrg);
     DeleteObject(brush);
-
     for (auto car : cars){
         car->draw(hdc);
     }
 }
 
 void Intersection::autoPosition(RECT screen) {
-
     int x_pos = screen.right / 2;
     int y_pos = screen.bottom / 2;
     west_pos = x_pos - h_road_width;

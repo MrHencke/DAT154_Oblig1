@@ -1,14 +1,4 @@
-// DAT154_Oblig1.cpp : Defines the entry point for the application.
-//
-
-#include "framework.h"
 #include "DAT154_Oblig1.h"
-#include "Resource.h"
-#include <iostream>
-#include "TrafficController.h"
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 
 #define MAX_LOADSTRING 100
 
@@ -23,20 +13,16 @@ int pw=0;
 int pn=0;
 TrafficController trafficController;
 
-//Forward declarations of functions
-void clearScreen(HWND hWnd); 
-void writePW(HDC hdc, RECT screen, int pw);
-void writePN(HDC hdc, RECT screen, int pn);
-void writeDebugProbabilities(HDC hdc, RECT screen, int pw, int pn);
-
-
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    Settings(HWND, UINT, WPARAM, LPARAM);
-
+void clearScreen(HWND hWnd); 
+void writePW(HDC hdc, RECT screen, int pw);
+void writePN(HDC hdc, RECT screen, int pn);
+void writeDebugProbabilities(HDC hdc, RECT screen, int pw, int pn);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -44,8 +30,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-
-    // TODO: Place code here.
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -76,12 +60,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
-
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -103,16 +81,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   FUNCTION: InitInstance(HINSTANCE, int)
-//
-//   PURPOSE: Saves instance handle and creates main window
-//
-//   COMMENTS:
-//
-//        In this function, we save the instance handle in a global variable and
-//        create and display the main program window.
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
@@ -124,24 +92,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
+   //Initialize timers
    SetTimer(hWnd, TL_Timer, yellow_interval, NULL);
    SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
    SetTimer(hWnd, SpawnCars_Timer, 1000, NULL);
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
    return TRUE;
 }
 
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
+//Main window procedure
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     RECT screen;
@@ -161,7 +122,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
-            // Parse the menu selections:
             switch (wmId)
             {
             case IDM_ABOUT:
@@ -199,8 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_TIMER:
-        switch (wParam)
-        {
+        switch (wParam){
         case TL_Timer:
             if (trafficController.incrementAllTrafficLights() == 0) {
                 SetTimer(hWnd, TL_Timer, red_green_interval, NULL);
@@ -215,8 +174,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             clearScreen(hWnd);
             SetTimer(hWnd, UpdateCars_Timer, cars_timer_interval, NULL);
             break;
-        case SpawnCars_Timer:
-            if (rand() % 100 +1 <= pw) {
+        case SpawnCars_Timer: 
+            if (rand() % 100 + 1 <= pw) {
                 trafficController.addCarToRoad(w, e);
             }
             if (rand() % 100 + 1 <= pn) {
@@ -228,18 +187,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_KEYDOWN:
         switch (wParam) {
-            case VK_UP:
-                pn = pn >= 100 ? 100 : pn+10;
-                break;
-            case VK_DOWN:
-                pn = pn <= 0 ? 0 : pn-10;
-                break;
-            case VK_LEFT:
-                pw = pw >= 100 ? 100 : pw+10;
-                break;
-            case VK_RIGHT:
-                pw = pw <= 0 ? 0 : pw-10;
-                break;
+        case VK_UP:
+            pn = pn >= 100 ? 100 : pn + 10;
+            break;
+        case VK_DOWN:
+            pn = pn <= 0 ? 0 : pn - 10;
+            break;
+        case VK_LEFT:
+            pw = pw <= 0 ? 0 : pw - 10;
+            break;
+        case VK_RIGHT:
+            pw = pw >= 100 ? 100 : pw + 10;
+            break;
+        case 0x57: //W key
+            trafficController.addCarToRoad(n, s);
+            break;
+        case 0x41: //A key
+            trafficController.addCarToRoad(w, e);
+            break;
+        case 0x53: //S key
+            trafficController.addCarToRoad(s, n);
+            break;
+        case 0x44: //S key
+            trafficController.addCarToRoad(e, w);
+            break;
         }
         break;
     case WM_LBUTTONDOWN:
@@ -257,7 +228,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// Message handler for about box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -283,6 +253,7 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_INITDIALOG:
+        //TODO Set value in input field to current value;
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
@@ -293,6 +264,7 @@ INT_PTR CALLBACK Settings(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         }
 
         if (LOWORD(wParam) == IDOK) {
+            //TODO Add check if value is above 100.
             pw = GetDlgItemInt(hDlg, IDC_PW_FIELD, NULL, FALSE);
             pn = GetDlgItemInt(hDlg, IDC_PN_FIELD, NULL, FALSE);
             EndDialog(hDlg, LOWORD(wParam));

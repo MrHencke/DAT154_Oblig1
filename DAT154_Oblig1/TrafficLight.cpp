@@ -3,23 +3,12 @@
 #include "framework.h"
 #include "Config.h"
 
-    bool states[4][3] = {
-           {TRUE, FALSE, FALSE},
-           { TRUE, TRUE, FALSE },
-           { FALSE, FALSE, TRUE },
-           { FALSE, TRUE, FALSE } };
+    bool trafficLightStates[4][3] = {
+       {TRUE, FALSE, FALSE},
+       { TRUE, TRUE, FALSE },
+       { FALSE, FALSE, TRUE },
+       { FALSE, TRUE, FALSE } };
 
-    bool* getLightState(int state) {
-        return states[state];
-    }
-    TrafficLight::TrafficLight() {
-        this->direction = Direction::n;
-        this->west_pos = 0;
-        this->north_pos = 0;
-        this->east_pos = 0;
-        this->south_pos = 0;
-        this->state = 0;
-    }
     TrafficLight::TrafficLight(Direction direction) {
         this->direction = direction;
         this -> west_pos = 0;
@@ -50,24 +39,20 @@
                 brush = CreateSolidBrush(col_gray);
             }
             SelectObject(hdc, brush);
-
             Ellipse(hdc, left, top, right, bottom);
             SelectObject(hdc, hOrg);
             DeleteObject(brush);
-        WCHAR text[15];
-        wsprintf(text, _T("%d"), state);
-        TextOut(hdc, west_pos, north_pos, text, wcslen(text));
         }
 	}
+
     int TrafficLight::getState() {
         return state;
     }
+
     bool TrafficLight::isGreen() {
         return state == 2;
     }
-    void TrafficLight::setState(int x) {
-        state = x;
-    }
+
     void TrafficLight::incState() {
         state = (state + 1) % 4;
     };
@@ -80,7 +65,7 @@
                 north_pos = screen.bottom / 2 - h_road_width - tl_height - tl_margin;
                 break;
             case Direction::w:
-                west_pos = screen.right/2 - 3*tl_width;
+                west_pos = screen.right / 2 - h_road_width- 3*tl_width;
                 north_pos = screen.bottom/2 + h_road_width + tl_margin;
                 break;
             case Direction::s:
@@ -99,10 +84,10 @@
         east_pos = west_pos + tl_width;
         south_pos = north_pos + tl_height;
     };
-    void TrafficLight::refresh(HWND hWnd) {
-        RECT tl_area = { west_pos, north_pos, east_pos, south_pos };
-        InvalidateRect(hWnd, &tl_area, TRUE);
-    };
+
+    bool* TrafficLight::getLightState(int state) {
+        return trafficLightStates[state];
+    }
 
 
 
