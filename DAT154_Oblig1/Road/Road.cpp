@@ -1,9 +1,7 @@
-#include "framework.h"
 #include "Road.h"
-#include "Colors.h"
-#include "Config.h"
-#include "TrafficLight.h"
-#include "Lane.h"
+#include "../framework.h"
+#include "../Colors.h"
+#include "../TrafficLight.h"
 
 Road::Road(Direction direction){
     this->west_pos = 0;

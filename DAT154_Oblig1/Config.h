@@ -5,7 +5,6 @@
 
 const int road_lanes = 4;
 const int lane_width = 70;
-
 const int red_green_interval_S = 5;
 const int yellow_interval_S = 2;
 const int cars_timer_interval = 10; //Update car position every 10ms

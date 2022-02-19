@@ -3,12 +3,10 @@
 #include "Road.h"
 #include "TrafficLight.h"
 
-
 TrafficController::TrafficController() {
 	this -> intersection = Intersection();
 	this -> roads = std::vector<Road*>({ new TopRoad(), new LeftRoad(), new BottomRoad(), new RightRoad() });
 }
-
 
 void TrafficController::drawAll(HDC hdc) {
 	intersection.draw(hdc);
@@ -25,7 +23,6 @@ void TrafficController::positionAll(RECT screen) {
 		road->setLanes(screen);
 	}
 }
-
 
 int TrafficController::incrementAllTrafficLights() {
 

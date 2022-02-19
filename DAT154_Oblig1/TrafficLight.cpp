@@ -3,15 +3,11 @@
 #include "framework.h"
 #include "Config.h"
 
-    bool states[4][3] = {
-           {TRUE, FALSE, FALSE},
-           { TRUE, TRUE, FALSE },
-           { FALSE, FALSE, TRUE },
-           { FALSE, TRUE, FALSE } };
-
-    bool* getLightState(int state) {
-        return states[state];
-    }
+    bool trafficLightStates[4][3] = {
+       {TRUE, FALSE, FALSE},
+       { TRUE, TRUE, FALSE },
+       { FALSE, FALSE, TRUE },
+       { FALSE, TRUE, FALSE } };
 
     TrafficLight::TrafficLight(Direction direction) {
         this->direction = direction;
@@ -43,7 +39,6 @@
                 brush = CreateSolidBrush(col_gray);
             }
             SelectObject(hdc, brush);
-
             Ellipse(hdc, left, top, right, bottom);
             SelectObject(hdc, hOrg);
             DeleteObject(brush);
@@ -70,7 +65,7 @@
                 north_pos = screen.bottom / 2 - h_road_width - tl_height - tl_margin;
                 break;
             case Direction::w:
-                west_pos = screen.right/2 - 3*tl_width;
+                west_pos = screen.right / 2 - h_road_width- 3*tl_width;
                 north_pos = screen.bottom/2 + h_road_width + tl_margin;
                 break;
             case Direction::s:
@@ -90,6 +85,9 @@
         south_pos = north_pos + tl_height;
     };
 
+    bool* TrafficLight::getLightState(int state) {
+        return trafficLightStates[state];
+    }
 
 
 

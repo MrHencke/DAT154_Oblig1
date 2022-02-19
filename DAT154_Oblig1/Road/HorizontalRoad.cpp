@@ -1,8 +1,7 @@
-#include "framework.h"
+#include "../framework.h"
 #include "Road.h"
-#include "Colors.h"
-#include "Config.h"
-#include "TrafficLight.h"
+#include "../Colors.h"
+#include "../TrafficLight.h"
 
 void HorizontalRoad::drawLaneDivider(HDC hdc) {
     Road::draw(hdc);

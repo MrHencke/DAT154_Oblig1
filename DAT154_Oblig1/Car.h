@@ -21,7 +21,6 @@ class Car {
 
 	public:
 		Car(int x_pos, int y_pos, Direction start);
-		Car(int x_pos, int y_pos, Direction start, Direction destination);
 		int getYPos();
 		int getXPos();
 		int getSize();

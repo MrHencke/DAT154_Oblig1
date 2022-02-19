@@ -1,12 +1,11 @@
 #pragma once
 #ifndef ROAD_H
 #define ROAD_H
-#include "TrafficLight.h"
-#include "Config.h"
-#include "Lane.h"
+#include "../TrafficLight.h"
+#include "../Config.h"
+#include "../Lane/Lane.h"
 #include "list"
 #include "array"
-
 
 class Road {
 protected:

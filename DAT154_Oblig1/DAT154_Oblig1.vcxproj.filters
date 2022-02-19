@@ -36,7 +36,7 @@
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Road.h">
+    <ClInclude Include="Road\Road.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrafficLight.h">
@@ -48,7 +48,7 @@
     <ClInclude Include="TrafficController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lane.h">
+    <ClInclude Include="Lane\Lane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,13 +56,10 @@
     <ClCompile Include="DAT154_Oblig1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrafficLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Road.cpp">
+    <ClCompile Include="Road\Road.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Intersection.cpp">
@@ -71,25 +68,46 @@
     <ClCompile Include="TrafficController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lane.cpp">
+    <ClCompile Include="Lane\Lane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LeftRoad.cpp">
+    <ClCompile Include="Road\LeftRoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RightRoad.cpp">
+    <ClCompile Include="Road\RightRoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TopRoad.cpp">
+    <ClCompile Include="Road\TopRoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BottomRoad.cpp">
+    <ClCompile Include="Road\BottomRoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HorizontalRoad.cpp">
+    <ClCompile Include="Road\HorizontalRoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VerticalRoad.cpp">
+    <ClCompile Include="Road\VerticalRoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrafficLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\BottomLane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\OutboundLane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\LeftLane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\RightLane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\TopLane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lane\InboundLane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

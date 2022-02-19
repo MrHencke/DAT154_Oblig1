@@ -1,5 +1,5 @@
 #include "Road.h"
-#include "Colors.h"
+#include "../Colors.h"
 
 void VerticalRoad::drawLaneDivider(HDC hdc) {
     Road::draw(hdc);

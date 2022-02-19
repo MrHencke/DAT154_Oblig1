@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Road\;$(ProjectDir)\Lane\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,27 +146,33 @@
     <ClInclude Include="DAT154_Oblig1.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Intersection.h" />
-    <ClInclude Include="Lane.h" />
-    <ClInclude Include="Road.h" />
+    <ClInclude Include="Lane\Lane.h" />
+    <ClInclude Include="Road\Road.h" />
     <ClInclude Include="TrafficController.h" />
     <ClInclude Include="TrafficLight.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BottomRoad.cpp" />
+    <ClCompile Include="Lane\BottomLane.cpp" />
+    <ClCompile Include="Lane\InboundLane.cpp" />
+    <ClCompile Include="Lane\LeftLane.cpp" />
+    <ClCompile Include="Lane\OutboundLane.cpp" />
+    <ClCompile Include="Lane\RightLane.cpp" />
+    <ClCompile Include="Lane\TopLane.cpp" />
+    <ClCompile Include="Road\BottomRoad.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="DAT154_Oblig1.cpp" />
-    <ClCompile Include="HorizontalRoad.cpp" />
+    <ClCompile Include="Road\HorizontalRoad.cpp" />
     <ClCompile Include="Intersection.cpp" />
-    <ClCompile Include="Lane.cpp" />
-    <ClCompile Include="LeftRoad.cpp" />
-    <ClCompile Include="RightRoad.cpp" />
-    <ClCompile Include="Road.cpp" />
-    <ClCompile Include="TopRoad.cpp" />
+    <ClCompile Include="Lane\Lane.cpp" />
+    <ClCompile Include="Road\LeftRoad.cpp" />
+    <ClCompile Include="Road\RightRoad.cpp" />
+    <ClCompile Include="Road\Road.cpp" />
+    <ClCompile Include="Road\TopRoad.cpp" />
     <ClCompile Include="TrafficController.cpp" />
     <ClCompile Include="TrafficLight.cpp" />
-    <ClCompile Include="VerticalRoad.cpp" />
+    <ClCompile Include="Road\VerticalRoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DAT154_Oblig1.rc" />
