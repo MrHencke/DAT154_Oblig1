@@ -18,6 +18,10 @@
 
 This repo contains my solution(s) to the first obligatory assignment in DAT154 Spring 2022.
 It is my first venture into C++, so best practises are likely not followed to a tee.
+<br>
+The solution was made to be more expandable, thus leaving a fair few dead variables.
+<br>
+All constants are customizable in header files, amount of lanes, lane width, car size, car speed etc.
 
 ## Requirements
 
